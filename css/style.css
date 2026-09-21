@@ -248,3 +248,25 @@ body {
 /* JS 标记的触控设备：横屏显示虚拟键 */
 body.touch-device.landscape .touch-controls { display: flex !important; }
 body.touch-device.landscape .help { display: none; }
+
+.mute-btn {
+  font-family: inherit;
+  font-size: 8px;
+  padding: 6px 10px;
+  margin-left: auto;
+  cursor: pointer;
+  color: #1a1028;
+  background: linear-gradient(180deg, #ffe08a, #c48a3a);
+  border: 2px solid #fff3c0;
+  box-shadow: 0 2px 0 #5a3a1a;
+  border-radius: 4px;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+.mute-btn:active { transform: translateY(2px); box-shadow: 0 0 0 #5a3a1a; }
+.mute-btn.is-muted {
+  color: #c4a882;
+  background: #2a1838;
+  border-color: #5a4a3a;
+  box-shadow: 0 2px 0 #1a1020;
+}

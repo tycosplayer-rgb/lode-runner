@@ -7,7 +7,7 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="screen-orientation" content="landscape" />
   <title>淘金者 · Lode Runner</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=2" />
 </head>
 <body>
   <!-- 竖屏提示：请横屏游玩 -->
@@ -23,6 +23,7 @@
       <div class="hud-item">剩余生命 <span id="lives">3</span></div>
       <div class="hud-item">金子 <span id="gold-got">0</span>/<span id="gold-total">0</span></div>
       <div class="hud-item">得分 <span id="score">0</span></div>
+      <button type="button" id="mute-btn" class="mute-btn" aria-pressed="false" title="切换音效">音效</button>
     </header>
 
     <div id="canvas-wrap">
@@ -53,12 +54,13 @@
     </div>
 
     <footer class="help">
-      <p><strong>操作说明：</strong>方向键 ←→↑↓ 移动 · <kbd>Z</kbd> 左挖 · <kbd>X</kbd> 右挖 · <kbd>P</kbd> 暂停 · <kbd>R</kbd> 重开。手机请横屏，左手方向、右手挖洞。</p>
+      <p><strong>操作说明：</strong>方向键 ←→↑↓ 移动 · <kbd>Z</kbd> 左挖 · <kbd>X</kbd> 右挖 · <kbd>P</kbd> 暂停 · <kbd>R</kbd> 重开 · 右上角切换音效/静音。手机请横屏，左手方向、右手挖洞。</p>
       <p>收集全部金子后顶部出口梯子出现，爬到最上方过关。敌人掉进洞会被困，洞填上时敌人消灭并重生。</p>
     </footer>
   </div>
 
-  <script src="js/levels.js"></script>
-  <script src="js/game.js"></script>
+  <script src="js/levels.js?v=2"></script>
+  <script src="js/audio.js?v=2"></script>
+  <script src="js/game.js?v=2"></script>
 </body>
 </html>

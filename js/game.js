@@ -49,6 +49,7 @@
   const keys = Object.create(null);
   let digLeftQueued = false;
   let digRightQueued = false;
+  let lastStepAt = 0;
 
   // —— 输入：键盘 ——
   window.addEventListener("keydown", (e) => {
@@ -335,6 +336,7 @@
   function revealExit() {
     if (state.exitReady) return;
     state.exitReady = true;
+    if (window.LodeAudio) LodeAudio.play("exit");
     // 在顶部空列放置出口梯子
     for (let x = 0; x < COLS; x++) {
       if (state.map[0][x] === T.EMPTY || state.map[0][x] === T.ROPE) {
@@ -390,6 +392,7 @@
     // 不能挖有敌人站着的砖上方……允许挖，敌人会掉
     setTile(tx, ty, T.HOLE);
     state.holes.push({ x: tx, y: ty, age: 0, max: HOLE_DURATION });
+    if (window.LodeAudio) LodeAudio.play("dig");
   }
 
   function updateHoles(dt) {
@@ -417,6 +420,7 @@
 
   function killEnemy(e) {
     state.score += 100;
+    if (window.LodeAudio) LodeAudio.play("enemyDie");
     e.x = e.spawnX;
     e.y = e.spawnY;
     e.trapped = 0;
@@ -431,6 +435,7 @@
       setTile(cx, cy, T.EMPTY);
       state.goldLeft--;
       state.score += 250;
+    if (window.LodeAudio) LodeAudio.play("gold");
       updateHud();
       if (state.goldLeft <= 0) revealExit();
     }
@@ -454,6 +459,8 @@
 
   function levelClear() {
     state.mode = "clear";
+    const _willWin = state.levelIndex + 1 >= window.LODE_LEVELS.length;
+    if (window.LodeAudio) LodeAudio.play(_willWin ? "win" : "clear");
     state.score += 1000 + state.lives * 100;
     updateHud();
     const levels = window.LODE_LEVELS;
@@ -485,6 +492,7 @@
       return;
     }
     state.lives--;
+    if (window.LodeAudio) LodeAudio.play(state.lives <= 0 ? "gameOver" : "die");
     updateHud();
     if (state.lives <= 0) {
       state.mode = "over";
@@ -526,6 +534,7 @@
     const { cx, cy } = entityCell(e);
     if (tileAt(cx, cy) === T.HOLE) {
       e.trapped = ENEMY_TRAP_TIME;
+    if (window.LodeAudio) LodeAudio.play("trap");
       snapToGridX(e);
       e.y = cy * TILE;
       return;
@@ -645,6 +654,13 @@
       }
     }
 
+
+    // 轻脚步
+    if ((left || right || up || down) && !canFall(p) && performance.now() - lastStepAt > 160) {
+      lastStepAt = performance.now();
+      if (window.LodeAudio) LodeAudio.play("step");
+    }
+
     // 掉出地图底部
     if (p.y > (ROWS - 0.5) * TILE) die(false);
 
@@ -678,6 +694,7 @@
 
   function startGame() {
     state.lives = START_LIVES;
+    if (window.LodeAudio) { LodeAudio.unlock(); LodeAudio.play("start"); }
     state.score = 0;
     loadLevel(0);
   }
@@ -878,6 +895,36 @@
   updateChromeFlags();
   window.addEventListener("resize", updateChromeFlags);
   window.addEventListener("orientationchange", () => setTimeout(updateChromeFlags, 50));
+
+
+  // —— 音效开关 ——
+  const muteBtn = document.getElementById("mute-btn");
+  function refreshMuteBtn() {
+    if (!muteBtn || !window.LodeAudio) return;
+    const m = LodeAudio.isMuted();
+    muteBtn.textContent = m ? "静音" : "音效";
+    muteBtn.classList.toggle("is-muted", m);
+    muteBtn.setAttribute("aria-pressed", m ? "true" : "false");
+  }
+  refreshMuteBtn();
+  if (muteBtn) {
+    muteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (window.LodeAudio) {
+        LodeAudio.unlock();
+        LodeAudio.toggleMute();
+        if (!LodeAudio.isMuted()) LodeAudio.play("ui");
+        refreshMuteBtn();
+      }
+    });
+  }
+  // 覆盖层按钮：解锁音频 + UI 音
+  el.btn.addEventListener("click", () => {
+    if (window.LodeAudio) { LodeAudio.unlock(); LodeAudio.play("ui"); }
+  }, true);
+  el.btn.addEventListener("touchend", () => {
+    if (window.LodeAudio) { LodeAudio.unlock(); }
+  }, true);
 
   showTitle();
   requestAnimationFrame(frame);
