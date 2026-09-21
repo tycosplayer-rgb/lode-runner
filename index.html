@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="screen-orientation" content="landscape" />
+  <title>淘金者 · Lode Runner</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 竖屏提示：请横屏游玩 -->
+  <div id="rotate-hint" aria-live="polite">
+    <div class="phone" aria-hidden="true"></div>
+    <h2>请横屏游玩</h2>
+    <p>请将手机旋转至横屏<br/>以获得最佳游戏体验</p>
+  </div>
+
+  <div id="app">
+    <header class="hud">
+      <div class="hud-item">关卡 <span id="level-num">1</span></div>
+      <div class="hud-item">剩余生命 <span id="lives">3</span></div>
+      <div class="hud-item">金子 <span id="gold-got">0</span>/<span id="gold-total">0</span></div>
+      <div class="hud-item">得分 <span id="score">0</span></div>
+    </header>
+
+    <div id="canvas-wrap">
+      <canvas id="game" width="840" height="480"></canvas>
+      <div id="overlay" class="overlay">
+        <div id="overlay-content" class="overlay-box">
+          <h1 id="overlay-title">淘金者</h1>
+          <p id="overlay-sub">Lode Runner · 红白机风格 · 请横屏游玩</p>
+          <div id="overlay-body"></div>
+          <button id="overlay-btn" type="button">开始游戏</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="touch-controls" class="touch-controls" aria-label="触屏操作">
+      <div class="touch-left">
+        <div class="dpad">
+          <button type="button" class="tbtn t-up" data-key="ArrowUp" aria-label="上">▲</button>
+          <button type="button" class="tbtn t-left" data-key="ArrowLeft" aria-label="左">◀</button>
+          <button type="button" class="tbtn t-right" data-key="ArrowRight" aria-label="右">▶</button>
+          <button type="button" class="tbtn t-down" data-key="ArrowDown" aria-label="下">▼</button>
+        </div>
+      </div>
+      <div class="touch-right">
+        <button type="button" class="tbtn t-dig dig-l" data-key="KeyZ" aria-label="左挖">挖左<br/><span>Z</span></button>
+        <button type="button" class="tbtn t-dig dig-r" data-key="KeyX" aria-label="右挖">挖右<br/><span>X</span></button>
+      </div>
+    </div>
+
+    <footer class="help">
+      <p><strong>操作说明：</strong>方向键 ←→↑↓ 移动 · <kbd>Z</kbd> 左挖 · <kbd>X</kbd> 右挖 · <kbd>P</kbd> 暂停 · <kbd>R</kbd> 重开。手机请横屏，左手方向、右手挖洞。</p>
+      <p>收集全部金子后顶部出口梯子出现，爬到最上方过关。敌人掉进洞会被困，洞填上时敌人消灭并重生。</p>
+    </footer>
+  </div>
+
+  <script src="js/levels.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
