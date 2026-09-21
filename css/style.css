@@ -243,3 +243,8 @@ body {
   #rotate-hint { display: none !important; }
   #app { visibility: visible; pointer-events: auto; }
 }
+
+
+/* JS 标记的触控设备：横屏显示虚拟键 */
+body.touch-device.landscape .touch-controls { display: flex !important; }
+body.touch-device.landscape .help { display: none; }

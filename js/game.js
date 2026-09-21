@@ -866,6 +866,19 @@
     updateHud();
   }
 
+  
+  // 触控 / 横竖屏标记（可靠显示虚拟键）
+  function updateChromeFlags() {
+    const touch = ("ontouchstart" in window) || navigator.maxTouchPoints > 0;
+    document.body.classList.toggle("touch-device", touch);
+    const landscape = window.matchMedia("(orientation: landscape)").matches || window.innerWidth > window.innerHeight;
+    document.body.classList.toggle("landscape", landscape);
+    document.body.classList.toggle("portrait", !landscape);
+  }
+  updateChromeFlags();
+  window.addEventListener("resize", updateChromeFlags);
+  window.addEventListener("orientationchange", () => setTimeout(updateChromeFlags, 50));
+
   showTitle();
   requestAnimationFrame(frame);
 })();
